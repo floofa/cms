@@ -183,6 +183,11 @@ class Cms_Forms
     return $this->_formo->as_array('value');
   }
   
+  public function get_form_name()
+  {
+    return $this->_formo->name();
+  }
+  
   /**
   * pridani pole do formulare
   */
@@ -264,5 +269,10 @@ class Cms_Forms
   public function is_unique($value, $field)
   {
     return ORM::factory($this->_model, $this->_model_id)->is_unique($value, $field);
+  }
+  
+  public function exists($value, $field, $model)
+  {
+    return ORM::factory($model)->exists($value, $field);
   }
 }

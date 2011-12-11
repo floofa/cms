@@ -45,3 +45,8 @@ Route::set('static', '<controller>/<action>(/<args>)', array (
   'args' => '.+',
 ));
 
+// error handler
+Route::set('error', 'error/<action>(/<message>)', array('action' => '[0-9]++', 'message' => '.+'))
+  ->defaults(array(
+    'controller' => 'error_handler'
+));

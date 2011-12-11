@@ -30,9 +30,7 @@ class Form_Menu_Item_Edit extends Forms_List
       $parent = ($this->_data['parent_id']) ? $this->_data['parent_id'] : ORM::factory('menu_itemmptt')->root($this->_data['scope']);
       $mptt_object->values($values)->insert_as_last_child($parent);
       
-      // ulozeni pro nahrati obrazku, vytvoreni rew_id
       $orm_object = ORM::factory($this->_model, $mptt_object->id);
-      $orm_object->save();
     }
     else {
       $orm_object->values($values)->save();

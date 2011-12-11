@@ -120,6 +120,6 @@ class Cms_Model_Gallery_Item extends Orm
       $file_name = $this->id . '.' . $this->ext;
     }
     
-    return Linker::file('media', 'content-images', $this->gallery->model, $file_name);
+    return URL::site('media/content-images/' . $this->gallery->model . '/' . $file_name);
   }
 } 

@@ -86,7 +86,7 @@ abstract class Cms_Controller_Builder_Template_Administration_Classic_Tree exten
         if (Valid::digit($parent_id))
           $node->move_to_first_child($parent_id);
         else {
-          $node->move_to_first_child($node->root()->id);
+          $node->move_to_first_child($node->get_root()->id);
         }
       }
       
@@ -119,7 +119,7 @@ abstract class Cms_Controller_Builder_Template_Administration_Classic_Tree exten
       $s = ___('navigation_' . $this->request->controller() . '_edit_tree');
       Navigation::add((___($s) != $s) ?  ___($s) : ___('navigation_edit'), Request::initial_url());
       
-      $this->add_bookmarks($id);
+      $this->_add_bookmarks($id);
     }
     
     
@@ -132,7 +132,10 @@ abstract class Cms_Controller_Builder_Template_Administration_Classic_Tree exten
     $this->_view->form = $form;
   }
   
-  public function action_delete_tree($id)
+  /**
+  * smazani polozky ze stromu
+  */
+  public function action_delete_tree_item()
   {
     $id = $this->request->param('id');
     
@@ -147,9 +150,9 @@ abstract class Cms_Controller_Builder_Template_Administration_Classic_Tree exten
       
       $item_mptt->delete();
       
-      $this->request->redirect($this->request->url(array ('action' => 'list_tree', 'id' => $scope), TRUE));
+      $this->request->redirect(Route::get('mptt-list')->uri(array ('controller' => $this->request->controller(), 'id' => $scope)));
     }
     
-    $this->request->redirect($this->request->url(array ('action' => 'list_tree', 'id' => FALSE), TRUE));
+    $this->request->redirect(Route::get('mptt-list')->uri(array ('controller' => $this->request->controller(), 'id' => FALSE)));
   }
 }

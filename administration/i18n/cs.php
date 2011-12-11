@@ -62,7 +62,7 @@ return array (
   
   // uzivatel cms
   'form_cms_user_edit_heading' => 'Editace uživatele',
-  'form_cms_user_edit_field_username' => 'Jméno',
+  'form_cms_user_edit_field_username' => 'Login',
   'form_cms_user_edit_field_email' => 'E-mail',
   'form_cms_user_edit_field_password' => 'Heslo',
   

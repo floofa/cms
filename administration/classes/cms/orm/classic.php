@@ -2,11 +2,6 @@
 
 class Cms_Orm_Classic extends ORM
 {
-  /**
-  * nastaveni rew_id v set()
-  */
-  protected $_rew_id_set = TRUE;
-  
   protected $_rew_id_col_value = 'name';
   
   protected $_list_where = array ();
@@ -21,6 +16,7 @@ class Cms_Orm_Classic extends ORM
   
   protected $_form_date_time_fields = array ();
   
+  protected $_form_numeric_fields = array ();
   
   
   public function formo()
@@ -181,6 +177,11 @@ class Cms_Orm_Classic extends ORM
       if ($values[$key]) {
         $values[$key] = date('d.m.Y H:i', $values[$key]);
       }
+    }
+    
+    list($decimal) = array_values(localeconv());
+    foreach ($this->_form_numeric_fields as $key) {
+      $filters[$key] = str_replace('.', $decimal,  $values[$key]);
     }
     
     return $values;

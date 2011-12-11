@@ -1,0 +1,1 @@
+<h1>404 Exception - požadovaná stránka nenalezena</h1>

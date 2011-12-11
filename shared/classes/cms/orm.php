@@ -26,7 +26,10 @@ class Cms_ORM extends Kohana_ORM
   */
   protected $_save_gallery = TRUE;
   
-  
+  /**
+  * many_to_many items
+  */
+  protected $_habtm = array ();
   
   public function set($column, $value)
   {
@@ -58,7 +61,7 @@ class Cms_ORM extends Kohana_ORM
   {
     $filters = parent::filters();
     
-    $filters['rew_id'][ ] = array (array ('url', 'title'), array (':value'));
+    $filters['rew_id'][ ] = array (array ('url', 'title'), array (':value', '-', TRUE));
     $filters['rew_id'][ ] = array (array ($this, 'set_unique_value'), array (':field', ':value'));
     
     return $filters;
@@ -72,7 +75,8 @@ class Cms_ORM extends Kohana_ORM
   {
     // automaticke nastaveni rew_id
     if ($this->_auto_set_rew_id !== FALSE && array_key_exists($this->_auto_set_rew_id, $this->_object) && (is_null($this->_object[$this->_auto_set_rew_id]) || ! strlen($this->_object[$this->_auto_set_rew_id]))) {
-      $this->{$this->_auto_set_rew_id} = url::title($this->_object[$this->_primary_val], '-', TRUE);
+      //$this->{$this->_auto_set_rew_id} = url::title($this->_object[$this->_primary_val], '-', TRUE);
+      $this->{$this->_auto_set_rew_id} = $this->_object[$this->_primary_val];
     }
     
     // automaticke nastaveni timestampu
@@ -87,6 +91,8 @@ class Cms_ORM extends Kohana_ORM
     
     parent::save($validation);
     
+    $this->_sync_habtm();
+    
     // save gallery
     if ($this->_save_gallery) {
       $galleries = ORM::factory('gallery')
@@ -100,6 +106,39 @@ class Cms_ORM extends Kohana_ORM
         $gallery->session_id = NULL;
         $gallery->save();
       }
+    }
+    
+    return $this;
+  }
+  
+  public function values(array $values, array $expected = NULL)
+  {
+    parent::values($values);
+    
+    // set habtm items
+    foreach($this->_has_many as $key => $value) {
+      if (isset($values[$key])) {
+        $this->_habtm[$key] = $values[$key];
+        continue;
+      }
+    }
+    
+    return $this; 
+  }
+  
+  /**
+  * set many_to_many items
+  */
+  protected function _sync_habtm() 
+  {
+    foreach($this->_habtm as $alias => $values) {
+      DB::delete($this->_has_many[$alias]['through'])
+        ->where($this->_has_many[$alias]['foreign_key'], '=', $this->pk())
+        ->execute($this->_db);
+
+      
+      foreach ($values as $value)
+        $this->add($alias, ORM::factory($this->_has_many[$alias]['model'], $value)); 
     }
     
     return $this;
@@ -170,8 +209,12 @@ class Cms_ORM extends Kohana_ORM
     return $res;
   }
   
-  public function get_gallery_items($gallery_name = 'default', $count = FALSE)
+  public function get_gallery_items($gallery_name = FALSE, $count = FALSE)
   {
+    if ($gallery_name === FALSE) {
+      $gallery_name = $this->_object_name . '_images';
+    }
+    
     $gallery = ORM::factory('gallery')
       ->where('model', '=', $this->_object_name)
       ->where('model_id', '=', $this->id)
@@ -195,6 +238,35 @@ class Cms_ORM extends Kohana_ORM
   }
   
   /**
+  * vrati odkaz na hlavni obrazek z galerie
+  * 
+  * @param mixed $suffix
+  * @param mixed $gallery_name
+  * @return string
+  */
+  public function get_main_img_src($suffix = '', $gallery_name = FALSE)
+  {
+    if ($gallery_name === FALSE) {
+      $gallery_name = $this->_object_name . '_images';
+    }
+    
+    $items = $this->get_gallery_items($gallery_name, 1);
+    $gallery_item = current($items);
+
+    if ( ! $gallery_item)
+      return '';
+    
+    if (strlen($suffix)) {
+      $file_name = $gallery_item->id . '_' . $suffix . '.' . $gallery_item->ext;
+    }
+    else {
+      $file_name = $gallery_item->id . '.' . $gallery_item->ext;
+    }
+    
+    return URL::site('media/content-images/' . $this->_object_name . '/' . $file_name, TRUE); 
+  }
+  
+  /**
   * zjisti, jestli hodnota pro dane pole neni jiz vlozena v databazi
   * 
   * @param mixed $value
@@ -211,9 +283,9 @@ class Cms_ORM extends Kohana_ORM
       ->get('total');
   }
   
-  public static function exists($value, $field)
+  public function exists($value, $field)
   {
-    return ORM::factory($this->_object_name)->where($field, '=', $value)->find()->loaded();
+    return $this->where($field, '=', $value)->find()->loaded();
   }
   
   public function as_form_array()

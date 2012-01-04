@@ -20,6 +20,9 @@ return array (
   'navigation_new' => 'Vytvořit',
   'navigation_edit' => 'Editace',
   
+  // bookmarks
+  'bookmarks_edit' => 'Editace',
+  
   //-------- LISTS ------------ //
   
   // uzivatele cms
@@ -70,15 +73,20 @@ return array (
   'form_page_edit_heading' => 'Editace statické stránky',
   'form_page_edit_group_page_images' => 'Obrázky',
   'form_page_edit_field_name' => 'Název',
+  'form_page_edit_field_name_en' => 'Název (EN)',
   'form_page_edit_field_head_title' => 'Titulek',
+  'form_page_edit_field_head_title_en' => 'Titulek (EN)',
   'form_page_edit_field_rew_id' => 'Url',
   'form_page_edit_field_sys_name' => 'Systémový název',
   'form_page_edit_field_meta_keywords' => 'Meta keywords',
+  'form_page_edit_field_meta_keywords_en' => 'Meta keywords (EN)',
   'form_page_edit_field_meta_description' => 'Meta description',
+  'form_page_edit_field_meta_description_en' => 'Meta description (EN)',
   'form_page_edit_field_cms_status' => 'Zobrazit',
   'form_page_edit_field_page_type' => 'Typ stránky',
   'form_page_edit_field_page_layout' => 'Layout stránky',
   'form_page_edit_field_content' => 'Obsah',
+  'form_page_edit_field_content_en' => 'Obsah (EN)',
   
   'form_page_filter_field_name' => 'Název',
   
@@ -90,6 +98,7 @@ return array (
   // menu - polozka
   'form_menu_item_edit_heading' => 'Editace položky menu',
   'form_menu_item_edit_field_name' => 'Název',
+  'form_menu_item_edit_field_name_en' => 'Název (EN)',
   'form_menu_item_edit_field_page_id' => 'Statická stránka',
   'form_menu_item_edit_field_url' => 'Url',
   

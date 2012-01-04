@@ -31,6 +31,24 @@ class Cms_ORM extends Kohana_ORM
   */
   protected $_habtm = array ();
   
+  protected $_multilang_fields = array ();
+  
+  public $multilang_fields_enabled = TRUE;
+  
+  public function __get($column)
+  {
+    // multilang columns
+    if (Kohana::$config->load('lang.enabled') && $this->multilang_fields_enabled) {
+      if (in_array($column, $this->_multilang_fields)) {
+        if (Kohana::$config->load('lang.default_lang') != Request::$lang) {
+          $column = $column . '_' . Request::$lang;
+        }
+      }
+    }
+    
+    return parent::__get($column);
+  }
+  
   public function set($column, $value)
   {
     if ($value === "#null#") {
@@ -237,6 +255,21 @@ class Cms_ORM extends Kohana_ORM
     return array ();
   }
   
+  public function get_main_img($gallery_name = FALSE)
+  {
+    if ($gallery_name === FALSE) {
+      $gallery_name = $this->_object_name . '_images';
+    }
+    
+    $items = $this->get_gallery_items($gallery_name, 1);
+    $gallery_item = current($items);
+    
+    if ( ! $gallery_item)
+      return FALSE;
+      
+    return $gallery_item;
+  }
+  
   /**
   * vrati odkaz na hlavni obrazek z galerie
   * 
@@ -246,24 +279,12 @@ class Cms_ORM extends Kohana_ORM
   */
   public function get_main_img_src($suffix = '', $gallery_name = FALSE)
   {
-    if ($gallery_name === FALSE) {
-      $gallery_name = $this->_object_name . '_images';
-    }
+    $gallery_item = $this->get_main_img($gallery_name);
     
-    $items = $this->get_gallery_items($gallery_name, 1);
-    $gallery_item = current($items);
-
     if ( ! $gallery_item)
       return '';
     
-    if (strlen($suffix)) {
-      $file_name = $gallery_item->id . '_' . $suffix . '.' . $gallery_item->ext;
-    }
-    else {
-      $file_name = $gallery_item->id . '.' . $gallery_item->ext;
-    }
-    
-    return URL::site('media/content-images/' . $this->_object_name . '/' . $file_name, TRUE); 
+    return $gallery_item->get_link($suffix);
   }
   
   /**

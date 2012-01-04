@@ -36,7 +36,7 @@
       foreach ($data['actions'] as $key => $action) {
         $action = str_replace('{parent_id}', $item[$data['items_parent_id_key']], str_replace('{id}', $item[$data['items_id_key']], $action));
         
-        echo '<img class="action-' . $key . '>" src="'.URL::site('media/admin/images/icons/' . $data['actions_images'][$key], TRUE, FALSE) . '" onClick="'.$key.'(\''.$action.'\')" />';
+        echo '<img class="action-' . $key . '>" src="'.URL::site('media/admin/images/icons/' . arr::get($data['actions_images'], $key, ''), TRUE, FALSE) . '" onClick="do_row_action(\''.$key.'\', \''.$action.'\')" />';
       }
       
       echo '</span>';
@@ -157,6 +157,14 @@ $(function() {
   });
 });
 
+function do_row_action(name, url) {
+  if (name == 'delete_item' && ! confirm("Opravdu chcete odstranit polozku?"))
+    return false;
+
+  $.cms.redirect(url);
+}
+
+/*
 function add_item(url) {
   $.cms.redirect(url);
 }
@@ -169,5 +177,6 @@ function delete_item(url) {
   if (confirm("Opravdu chcete odstranit polozku?"))
     $.cms.redirect(url);
 }
+*/
 
 </script>

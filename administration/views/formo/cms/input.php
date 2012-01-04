@@ -1,5 +1,9 @@
 <?php echo $open; ?>
-	<label<?if ($id = $this->attr('id')) echo ' for="'.$id.'"'; ?>><?=$label?>:</label>
+  <?if (isset($this->field()->lang)):?>
+    <span class="lang lang_<?=$this->field()->lang?>">
+  <?endif;?>
+	
+  <label<?if ($id = $this->attr('id')) echo ' for="'.$id.'"'; ?>><?=$label?>:</label>
   
   <?$this->add_class('text-input medium-input')?>
   
@@ -10,4 +14,8 @@
   ?>
   
 	<?=$this->html()?>
+  
+  <?if (isset($this->field()->lang)):?>
+    </span>
+  <?endif;?>
 <?php echo $close; ?>

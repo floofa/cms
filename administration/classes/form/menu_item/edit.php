@@ -2,6 +2,8 @@
 
 class Form_Menu_Item_Edit extends Forms_List
 {
+  protected $_multilang_fields = array ('name');
+  
   public function build()
   {
     $this->group('group1')
@@ -15,10 +17,14 @@ class Form_Menu_Item_Edit extends Forms_List
   
   public function set_rules()
   {
-    $this->rule('name', 'not_empty');
-    $this->rule('name', 'max_length', array (':value', 50));
+    $this->rules('name', array (
+      array ('not_empty'),
+      array ('max_length', array (':value', 50)),
+    ));
     
-    $this->rule('url', 'max_length', array (':value', 50));
+    $this->rules('url', array (
+      array ('max_length', array (':value', 50))
+    ));
   }
   
   public function do_form($values = array (), $refresh = FALSE, $redirect = TRUE)

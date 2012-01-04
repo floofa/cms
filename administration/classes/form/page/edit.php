@@ -2,6 +2,8 @@
 
 class Form_Page_Edit extends Forms_List
 {
+  protected $_multilang_fields = array ('head_title', 'meta_keywords', 'meta_description', 'content');
+  
   public function build()
   {
     $this->group('group1')

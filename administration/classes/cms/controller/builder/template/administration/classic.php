@@ -166,7 +166,7 @@ abstract class Cms_Controller_Builder_Template_Administration_Classic extends Co
       $link = $this->_get_bookmark_url($bookmark_name, $id);
       
       // nazev
-      $name = ___('bookmarks_' . $options['name']);
+      $name = ___('bookmarks_' . arr::get($options, 'name', $bookmark_name));
       
       // pridani do zalozek
       Bookmarks::add_item($name, $link);
@@ -177,25 +177,25 @@ abstract class Cms_Controller_Builder_Template_Administration_Classic extends Co
   
   public function _get_bookmark_url($name, $id)
   {
+    $options = $this->_edit_bookmarks[$name];
+    
     // zpracovani parametru
-    if (isset($this->_edit_bookmarks[$name]['params'])) {
-      foreach ($this->_edit_bookmarks[$name]['params'] as $key => $value) {
-        // pouzije aktualni controller
-        if ($key == 'controller' && $value === TRUE) {
-          $value = $this->request->controller();
-        }
-        
-        // nahradi {id} za aktualni id
-        $value = str_replace('{id}', $id, $value);
-        
-        // nastaveni zpet do pole
-        $this->_edit_bookmarks[$name]['params'][$key] = $value;
+    foreach (arr::get($options, 'params', array ()) as $key => $value) {
+      // pouzije aktualni controller
+      if ($key == 'controller' && $value === TRUE) {
+        $value = $this->request->controller();
       }
+      
+      // nahradi {id} za aktualni id
+      $value = str_replace('{id}', $id, $value);
+      
+      // nastaveni zpet do pole
+      $options['params'][$key] = $value;
     }
     
     // sestaveni odkazu
-    if (isset($this->_edit_bookmarks[$name]['route'])) {
-      $link = Route::url($this->_edit_bookmarks[$name]['route'], $this->_edit_bookmarks[$name]['params'], TRUE);
+    if (isset($options['route'])) {
+      $link = Route::url($options['route'], arr::get($options, 'params', array ()), TRUE);
     }
     else {
       $link = Request::initial_url();

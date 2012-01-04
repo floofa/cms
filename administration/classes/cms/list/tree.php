@@ -68,10 +68,13 @@ abstract class Cms_List_Tree
               $link = Route::url('mptt-edit', array ('controller' => Request::$initial->controller(), 'id' => 0, 'parent_id' => '{id}'));
               break;
             case 'edit_item':
-              $link = Route::url('mptt-edit', array ('controller' => Request::$initial->controller(), 'id' => '{id}', 'parent_id' => '{parent_id}'));
+              $link = Route::url('mptt-edit', array ('controller' => Request::$initial->controller(), 'id' => '{id}'));
               break;
             case 'delete_item':
               $link = Route::url('mptt-delete_item', array ('controller' => Request::$initial->controller(), 'id' => '{id}'));
+              break;
+            default:
+              $link = ($link === TRUE) ? Route::url('default', array ('controller' => Request::current()->controller(), 'action' => $action, 'id' => '{id}')) : $link;
               break;
           }
         }

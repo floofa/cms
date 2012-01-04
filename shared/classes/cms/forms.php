@@ -2,6 +2,8 @@
 
 class Cms_Forms
 { 
+  protected static $_forms = array ();
+  
   protected $_name;
   
   protected $_folder;
@@ -29,7 +31,7 @@ class Cms_Forms
     $file = 'form/' . (($folder !== FALSE) ? $folder . '/' : '') . $name;
     
     if ($path = Kohana::find_file('classes', $file)) {
-      require $path;
+      require_once $path;
     }
     else
       throw new Kohana_Exception('Your requested form :file is not found.', array (':file' => $file));
@@ -37,7 +39,7 @@ class Cms_Forms
     $class = 'form_' . (($folder !== FALSE) ? $folder . '_' : '') . $name;
     
     // vytvoreni instance formulare
-    $form = new $class($name, $folder, $model, $model_id, $data);
+    self::$_forms[$class] = $form = new $class($name, $folder, $model, $model_id, $data);
     
     $form->build();
     $form->set_values();
@@ -274,5 +276,21 @@ class Cms_Forms
   public function exists($value, $field, $model)
   {
     return ORM::factory($model)->exists($value, $field);
+  }
+  
+  public function sent($values = NULL) 
+  {
+    return $this->_formo->sent($values);
+  }
+
+  // zjisti, jestli byl formular odeslan
+  public static function is_sent($name, $folder, $values = NULL)
+  {
+    $form_name = 'form_' . (($folder !== FALSE) ? $folder . '_' : '') . $name;
+    
+    if (isset(self::$_forms[$form_name]))
+      return self::$_forms[$form_name]->sent();
+    
+    return FALSE;
   }
 }

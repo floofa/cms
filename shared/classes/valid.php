@@ -22,4 +22,14 @@ class Valid extends Kohana_Valid
   {
     return (bool) $value;
   }
+  
+  public static function time($value)
+  {
+    if (stripos($value, ':') !== FALSE) {
+      list($h, $m) = explode(':', $value);
+      return (valid::range($h, 0, 23) && valid::range($m, 0, 59));
+    }
+      
+    return FALSE;
+  }
 }

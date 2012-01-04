@@ -1,5 +1,10 @@
 <?php defined('SYSPATH') or die('No direct script access.');
   
+/**
+* set exception handler
+*/
+$res = set_exception_handler(array('Kohana_Exception_Cms', 'handler'));
+  
 // galerie - upload
 Route::set('galleries-upload', 'galleries/upload')
 ->defaults(array(

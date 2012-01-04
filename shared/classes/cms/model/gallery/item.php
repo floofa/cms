@@ -14,7 +14,7 @@ class Cms_Model_Gallery_Item extends Orm
       $file_name = $this->id . '.' . $this->ext;
     }
     
-    return URL::site('media/content-images/' . $this->gallery->model .'/' . $file_name, TRUE, FALSE);
+    return URL::site('media/content-images/' . $this->gallery->model .'/' . $file_name, TRUE, FALSE, FALSE);
   }
   
   public function delete()

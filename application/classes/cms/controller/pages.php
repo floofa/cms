@@ -33,23 +33,44 @@ abstract class Cms_Controller_Pages extends Cms_Controller_Builder_Template_Appl
     if ( ! $this->_page->loaded())
       throw new HTTP_Exception_404('Unable to find a route to match the URI: :uri', array (':uri' => $uri));
     
+    // nastaveni typu stranky
+    $this->page_type = $this->_page->page_type;
+    
     // layout
     if (Kohana::find_file('views/layouts', $this->_page->page_layout)) {
       $this->_layout = 'layouts/' . $this->_page->page_layout;
     }
     
+    $view_type_name = FALSE;
+    
+    // type layout
+    if (Kohana::find_file('views/layouts/pages', 'page-' . $this->_page->page_type)) {
+      $view_type_name = 'layouts/pages/' . 'page-' . $this->_page->page_type;
+    }
+    
     // view
     $view_name = 'pages/pages-show';
     
-    if (Kohana::find_file('views/layouts/pages', 'page-' . $this->_page->sys_name)) {
-      $view_name = 'layouts/pages/' . 'page-' . $this->_page->sys_name;
+    if (Kohana::find_file('views/pages/static', 'page-' . $this->_page->sys_name)) {
+      $view_name = 'pages/static/' . 'page-' . $this->_page->sys_name;
     }
-    elseif (Kohana::find_file('views/layouts/pages', 'page-' . $this->_page->page_layout)) {
-      $view_name = 'layouts/pages/' . 'page-' . $this->_page->page_layout;
+    
+    if ($view_type_name !== FALSE) {
+      $view_type = View::factory($view_type_name);
     }
 
-    $this->_view = View::factory($view_name);
-    $this->_view->content = $this->_page->content;
+    $view = View::factory($view_name);
+    $view->content = $this->_page->content;
+    
+    if ($view_type_name !== FALSE) {
+      $view_type = View::factory($view_type_name);
+      $view_type->content = $view;
+      
+      $this->_view = $view_type;
+    }
+    else {
+      $this->_view = $view;
+    }
     
     Head::set_arr($this->_page->as_array());
     Navigation::add($this->_page->name, $this->request->url());

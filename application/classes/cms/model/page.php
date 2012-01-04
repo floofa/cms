@@ -2,11 +2,13 @@
 
 class Cms_Model_Page extends ORM 
 {
+  protected $_multilang_fields = array ('head_title', 'meta_keywords', 'meta_description', 'content');
+  
   public function __get($column)
   {
     switch ($column) {
       case 'content' :
-        return cms::prepare_content($this, parent::__get($column));
+        return cms::prepare_content(parent::__get($column), array ('orm_object' => $this));
     }
     
     return parent::__get($column);

@@ -17,7 +17,7 @@ Route::set('mptt-delete_item', '<controller>/delete_tree_item/<id>')
   ));
 
 // mptt - editace
-Route::set('mptt-edit', '<controller>/edit_tree_item/<parent_id>/<id>')
+Route::set('mptt-edit', '<controller>/edit_tree_item/<id>(/<parent_id>)')
   ->defaults(
     array (
     'action' => 'edit_tree_item',

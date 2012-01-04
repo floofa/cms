@@ -1,1 +1,1 @@
-<p class="<?php echo $this->driver(); ?><?php echo ($this->error()) ? ' field-error' : ''; ?>">
+<p class="<?php echo $this->driver(); ?><?if (isset($this->_field->lang)):?> lang lang_<?=$this->_field->lang?><?endif;?><?php echo ($this->error()) ? ' field-error' : ''; ?>">

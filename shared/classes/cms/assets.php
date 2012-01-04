@@ -143,12 +143,20 @@ class Cms_Assets
         $href = URL::base(TRUE) . $path . $item['file'];
       }
       
+      $attr_str = '';
+      
+      foreach (arr::get($item, 'attr', array ()) as $key => $value) {
+        $attr_str .= " $key=\"$value\"";
+      }
+      
       $res[ ] = array (
         'href' => $href, 
-        'media' => (isset($item['media'])) ? $item['media'] : 'screen',
+        'attr' => $attr_str,
       );
+      
+      
     }
-    
+
     return $res;
   }
   

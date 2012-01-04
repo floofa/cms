@@ -1,5 +1,15 @@
 <div class="content-box">
   <div class="content-box-header">
+    <?if (isset($form->active_lang)):?>
+      <?$langs = Kohana::$config->load('lang.languages'); $keys = array_keys($langs); $last_key = end($keys);?>
+
+      <span id="<?=$form->name()?>_lang_switcher" class="form_heading_lang_switcher">
+        <?foreach (Kohana::$config->load('lang.languages') as $key => $lang):?>
+          <a rel="<?=$key?>"<?if($key == $form->active_lang):?> class="active"<?endif;?>><?=$key?></a> <?if ($key !== $last_key):?>|<?endif;?>
+        <?endforeach;?>
+      </span>
+    <?endif;?>
+    
     <h3><?=___($form->name() . '_heading')?></h3>
     
     <div class="clear"></div>
@@ -83,3 +93,29 @@
     <?//=$form->close()?>
   </div>
 </div>
+
+<script type="text/javascript">
+<!--
+  $(function(){
+    <?if (isset($form->active_lang)):?>
+      $("#<?=$form->name()?> p.lang").hide();
+      $("#<?=$form->name()?> p.lang_<?=$form->active_lang?>").show();
+      //$("#<?=$form->name()?> p.lang.field-error").show();
+      
+      $("#<?=$form->name()?>_lang_switcher a").click(function(){
+        var lang = $(this).attr("rel");
+        
+        // aktivni odkaz
+        $("#<?=$form->name()?>_lang_switcher a").removeClass("active");
+        $(this).addClass("active");
+        
+        // zobrazeni spravnych inputu
+        $("#<?=$form->name()?> p.lang").hide();
+        $("#<?=$form->name()?> p.lang_" + lang).show();
+      });
+    <?endif;?>
+  });
+  
+  
+//-->
+</script>

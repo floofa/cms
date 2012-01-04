@@ -31,11 +31,14 @@ class Cms_Orm_Classic extends ORM
     return $this;
   }
   
-  public function load_list_filters()
+  public function load_list_filters($filters = FALSE)
   {
-    $session_name = ($this->_filter_session_name !== FALSE) ? $this->_filter_session_name : 'filter_' . $this->_object_name;
+    if ($filters === FALSE) {
+      $session_name = ($this->_filter_session_name !== FALSE) ? $this->_filter_session_name : 'filter_' . $this->_object_name;
+      $filters = Session::instance()->get($session_name);
+    }
     
-    if ($filters = Session::instance()->get($session_name)) {
+    if ($filters) {
       foreach ($filters as $field => $value) {
         if (strlen($value)) {
           if (in_array($field, $this->_filter_as_like)) {

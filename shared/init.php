@@ -44,12 +44,6 @@ Route::set('error', 'error/<action>(/<message>)', array('action' => '[0-9]++', '
     'controller' => 'error_handler'
   ));
   
-// staticke bloky
-Route::set('static', '<controller>/<action>(/<args>)', array (
-  'controller' => 'static_.*',
-  'args' => '.+',
-));
-
 // error handler
 Route::set('error', 'error/<action>(/<message>)', array('action' => '[0-9]++', 'message' => '.+'))
   ->defaults(array(

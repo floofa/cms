@@ -68,7 +68,14 @@ class Cms_Cms
       }
     }
     
-    // TODO: vlozeni bloku
+    // vlozeni bloku
+    if (preg_match_all('~{block:([a-zA-Z0-9_-]*)(:([a-zA-Z0-9,-]*))?}~', $content, $matches)) {
+      foreach($matches[0] as $key => $reg) {
+        $content = preg_replace('~' . $reg . '~', Blocks::get($matches[1][$key]), $content);
+      }
+    }
+    
+    
     // TODO: vlozeni formularu
     // TODO: vlozeni fotogalerii
     

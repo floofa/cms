@@ -3,11 +3,13 @@
 // Paths to media relative to DOCROOT
 return array
 (
+  // vychozi slozka (napr. admin)
+  'default_folder' => '',
+
   'groups' => array (
     'default' => array (
       'css' => '',
       'js' => '',
-      'options' => array ('default_folder' => ''),
     )
   ),
 

@@ -14,8 +14,7 @@
           <a target="_blank" href="<?=URL::site('', TRUE, FALSE)?>" title="Zobrazit web">Zobrazit web</a> | <a href="<?=Route::url('auth-logout')?>" title="Odhlásit se">Odhlásit se</a>
         </div>
         
-        <?=Request::factory('static/main_menu')->execute()?>
-        <?//=Request::factory('static_main/main_menu')->execute()?>
+        <?=Request::factory('static_administration/main_menu')->execute()?>
       </div>
     </div>
     

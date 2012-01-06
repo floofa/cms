@@ -12,7 +12,8 @@ class Form_Menu_Item_Edit extends Forms_List
       
     $this->col('col2')
       ->add('page_id', 'select', array ('options' => array ('#null#' => 'Vybrat') + ORM::factory('page')->find_all()->as_array('id', 'name')))
-      ->add('url');
+      ->add('url')
+      ->add('links_for_active', 'textarea');
   }
   
   public function set_rules()

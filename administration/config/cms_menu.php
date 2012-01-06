@@ -4,7 +4,9 @@ $config['sorting_sections'] = array ();
 $config['sorting_items'] = array ();
 
 $config['items']['administration_module']['children']['pages']['children'] = array ();
+$config['items']['administration_module']['children']['blocks']['children'] = array ();
 $config['items']['administration_module']['children']['menus']['children'] = array ();
+
 $config['items']['settings_module']['children']['cms_users']['children'] = array ();
 
 /**

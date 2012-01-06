@@ -14,13 +14,21 @@ class Cms_Assets
   
   public static $added_js = array ();
   
+  public static $options = array ();
+  
   /**
   * vrati konfiguraci pro danou skupinu
   */
   public static function get_config($group)
   {
     if (is_null(self::$config)) {
-      self::$config = Kohana::$config->load('assets.groups.' . $group);
+      $assets = Kohana::$config->load('assets');
+      
+      self::$config = $assets['groups'][$group];
+      
+      self::$options = array (
+        'default_folder' => $assets['default_folder'],
+      );
     }
     
     return self::$config;
@@ -115,7 +123,7 @@ class Cms_Assets
     $res = array ();
     
     $config = self::get_config($group);
-    $default_folder = $config['options']['default_folder'];
+    $default_folder = arr::get($config, 'default_folder', self::$options['default_folder']);
 
     foreach ($items as $item) {
       // nastaveni cesty
@@ -125,9 +133,9 @@ class Cms_Assets
       else {
         $path = 'media/';
         
-        if (isset($item['folder'])) {
-          if (strlen($item['folder'])) {
-            $path .= $item['folder']. '/';
+        if (isset($item['default_folder'])) {
+          if (strlen($item['default_folder'])) {
+            $path .= $item['default_folder'] . '/';
           }
         }
         elseif (strlen($default_folder)) {
@@ -136,8 +144,8 @@ class Cms_Assets
         
         $path .= 'css/';
         
-        if (isset($item['prefix']) && strlen($item['prefix'])) {
-          $path .= $item['prefix'] . '/';
+        if (isset($item['prefix_folder']) && strlen($item['prefix_folder'])) {
+          $path .= $item['prefix_folder'] . '/';
         }
         
         $href = URL::base(TRUE) . $path . $item['file'];
@@ -165,7 +173,7 @@ class Cms_Assets
     $res = array ();
     
     $config = self::get_config($group);
-    $default_folder = $config['options']['default_folder'];
+    $default_folder = self::$options['default_folder'];
     
     foreach ($items as $item) {
       // nastaveni cesty

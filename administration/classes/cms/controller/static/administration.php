@@ -2,6 +2,8 @@
 
 class Cms_Controller_Static_Administration extends Cms_Controller_Static
 {
+  protected $_folder = 'administration';
+  
   /**
   * main menu
   */

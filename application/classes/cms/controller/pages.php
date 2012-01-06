@@ -5,7 +5,14 @@ abstract class Cms_Controller_Pages extends Cms_Controller_Builder_Template_Appl
   protected $_page;
   
   /**
-  * route callback
+  * presmerovani 
+  * 
+  * @var mixed
+  */
+  protected $_redirect_homepage = TRUE;
+  
+  /**
+  * route callback - nastavi routy pro stat. stranky
   * 
   * @param mixed $uri
   * @return mixed
@@ -23,15 +30,22 @@ abstract class Cms_Controller_Pages extends Cms_Controller_Builder_Template_Appl
     }
   }
   
-  public function action_show($uri = FALSE)
+  public function action_show($uri = NULL)
   {
-    if ($uri === FALSE)
+    $_uri = $uri;
+    
+    if (is_null($uri)) {
       $uri = trim($this->request->param('uri', $this->request->uri()), '/');
+    }
     
     $this->_page = ORM::factory('page')->where('rew_id', '=', $uri)->find();
     
     if ( ! $this->_page->loaded())
       throw new HTTP_Exception_404('Unable to find a route to match the URI: :uri', array (':uri' => $uri));
+      
+    if ($this->_page->page_type == 'homepage' && is_null($_uri)) {
+      Request::redirect_initial('', 301);
+    }
     
     // nastaveni typu stranky
     $this->page_type = $this->_page->page_type;
@@ -78,6 +92,6 @@ abstract class Cms_Controller_Pages extends Cms_Controller_Builder_Template_Appl
   
   public function action_index() 
   {
-    $this->action_show(ORM::factory('page')->where('page_type', '=', 'homepage')->find()->rew_id);
+    $this->action_show(ORM::factory('page')->get_page_by_type('homepage')->rew_id);
   }
 }

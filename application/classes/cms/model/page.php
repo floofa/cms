@@ -18,4 +18,9 @@ class Cms_Model_Page extends ORM
   {
     return $this->find_all()->as_array('rew_id', 'id');
   }
+  
+  public function get_page_by_type($type)
+  {
+    return ORM::factory('page')->where('page_type', '=', $type)->find();
+  }
 }

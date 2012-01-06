@@ -21,6 +21,20 @@ class Cms_Model_Menu_Item extends ORM
     return $link;
   }
   
+  public function get_links_for_active()
+  {
+    $res = array ();
+    
+    foreach (explode("\n", $this->links_for_active) as $link) {
+      if ( ! strlen($link))
+        continue;
+        
+      $res[ ] = (stripos($this->url, 'http') === 0) ? $link : URL::site($link, TRUE);
+    }
+    
+    return $res;
+  }
+  
   public function get_children()
   {
     $item_mptt = ORM::factory('menu_itemmptt', $this->id);

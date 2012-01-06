@@ -6,6 +6,7 @@ return array (
   
   'static_page_page_types' => array('static' => 'Statická', 'homepage' => 'Homepage', 'news' => 'Novinky', 'articles' => 'Články'),
   'static_page_page_layouts' => array('static' => 'Statický', 'dynamic' => 'Dynamický', 'homepage' => 'Homepage', 'fancy' => 'Fancy'),
+  'static_block_types' => array ('static' => 'Statický', 'dynamic' => 'Dynamický'),
 
   // hlavni menu
   'cms_menu_administration_module' => 'Administrace',
@@ -48,6 +49,13 @@ return array (
   'list_tree_menu_new_button' => 'Nová položka',
   'list_tree_menu_fields' => array ('name' => 'Název'),
   'list_tree_menu_secondary_fields' => array ('link' => ''),
+  
+  // staticke a dynamicke bloky
+  'cms_menu_administration_module_blocks' => 'Bloky',
+  'navigation_blocks' => 'Bloky',
+  'list_block_heading' => 'Bloky',
+  'list_block_new_button' => 'Nový blok',
+  'list_block_fields' => array ('name' => 'Název', 'sys_name' => 'Systémový název', 'type' => 'Typ', 'cms_status' => 'Zobrazit'),
   
   
   //-------- FORMS ------------ //
@@ -100,7 +108,18 @@ return array (
   'form_menu_item_edit_field_name' => 'Název',
   'form_menu_item_edit_field_name_en' => 'Název (EN)',
   'form_menu_item_edit_field_page_id' => 'Statická stránka',
+  'form_menu_item_edit_field_links_for_active' => 'URL pro aktivni odkaz',
   'form_menu_item_edit_field_url' => 'Url',
+  
+  // staticke a dynamicke bloky
+  'form_block_edit_heading' => 'Editace bloku',
+  'form_block_edit_group_block_images' => 'Obrázky',
+  'form_block_edit_field_name' => 'Název',
+  'form_block_edit_field_sys_name' => 'Systémový název',
+  'form_block_edit_field_cms_status' => 'Zobrazit',
+  'form_block_edit_field_type' => 'Typ',
+  'form_block_edit_field_content' => 'Obsah',
+  
   
   
   //-------- VALIDATIONS ------------ //

@@ -18,18 +18,18 @@ class Cms_Menu
     $this->classes = $classes;
   }
   
-  public function add($label, $link = FALSE, $classes = array ()) 
+  public function add($label, $link = FALSE, $classes = array (), $links_for_active = array ()) 
   {
-    $item = new Menu_Item($label, $link, $classes);
+    $item = new Menu_Item($label, $link, $classes, $links_for_active);
     
     $this->items[ ] = $item;
     
     return $item;
   }
   
-  public function add_sub($item, $label, $link, $classes = array ())
+  public function add_sub($item, $label, $link, $classes = array (), $links_for_active = array ())
   {
-    $subitem = new Menu_Item($label, $link, $classes);
+    $subitem = new Menu_Item($label, $link, $classes, $links_for_active);
     
     $item->add_subitem($subitem);
     

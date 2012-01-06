@@ -2,7 +2,7 @@
 
 abstract class Cms_Controller_Builder_Static extends Controller
 {
-  protected $_folder = 'static';
+  protected $_folder;
   
   protected $_view = NULL;
   
@@ -13,7 +13,7 @@ abstract class Cms_Controller_Builder_Static extends Controller
     parent::before();
     
     // nastaveni view
-    $view_name = $this->_folder . '/' . $this->request->action();
+    $view_name = 'blocks/' . $this->_folder . '/' . $this->request->action();
     
     if ($file = Kohana::find_file('views', $view_name)) {
       $this->_view = View::factory($view_name);

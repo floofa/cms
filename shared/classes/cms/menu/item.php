@@ -10,9 +10,11 @@ class Cms_Menu_Item
   
   public $classes = array ();
   
+  protected $_links_for_active = array ();
+  
   public $active = FALSE;
   
-  public function __construct($label, $link = FALSE, $classes = array ())
+  public function __construct($label, $link = FALSE, $classes = array (), $links_for_active = array ())
   {
     if ($link === FALSE) {
       $link = Linker::get(url::title($label, '-', TRUE));
@@ -25,6 +27,7 @@ class Cms_Menu_Item
     $this->label = $label;
     $this->link = $link;
     $this->classes = $classes;
+    $this->_links_for_active = $links_for_active;
   }
   
   public function add_subitem($item)
@@ -35,10 +38,22 @@ class Cms_Menu_Item
   public function set_actives($uri)
   {
     $uri = trim($uri, '/') . '/';
-    $link = trim($this->link, '/') . '/';
     
-    if (stripos($uri, $link) !== FALSE)
-      $this->set_active();
+    if (count($this->_links_for_active)) {
+      $links = $this->_links_for_active;
+    }
+    else {
+      $links = array ($this->link);
+    }
+    
+    foreach ($links as $link) {
+      $link = trim($link, '/') . '/';
+      
+      if (stripos($uri, $link) !== FALSE) {
+        $this->set_active();
+        break;
+      }
+    }
       
     foreach ($this->subitems as $subitem) {
       if ($subitem->set_actives($uri)) {

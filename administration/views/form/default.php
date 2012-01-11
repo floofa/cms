@@ -90,7 +90,11 @@
     </p>
     
     </form>
-    <?//=$form->close()?>
+    
+    <?if (isset($data['_render_after'])):?>
+      <?=$data['_render_after']?>
+    <?endif;?>
+    
   </div>
 </div>
 

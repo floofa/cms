@@ -64,10 +64,10 @@ class Cms_ORM extends Kohana_ORM
           return;
         
         if ($value < $this->sequence)
-          Database::instance()->query(Database::UPDATE, 'UPDATE ' . $this->_table_name . ' SET sequence = sequence + 1 WHERE sequence >= ' . $value . ' AND sequence < ' . $this->sequence);
+          Database::instance()->query(Database::UPDATE, 'UPDATE `' . $this->_table_name . '` SET sequence = sequence + 1 WHERE sequence >= ' . $value . ' AND sequence < ' . $this->sequence);
         
         if ($value > $this->sequence)
-          Database::instance()->query(Database::UPDATE, 'UPDATE ' . $this->_table_name . ' SET sequence = sequence - 1 WHERE sequence <= ' . $value . ' AND sequence > ' . $this->sequence);
+          Database::instance()->query(Database::UPDATE, 'UPDATE `' . $this->_table_name . '` SET sequence = sequence - 1 WHERE sequence <= ' . $value . ' AND sequence > ' . $this->sequence);
         
         break;
     }

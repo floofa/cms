@@ -217,12 +217,12 @@ class Cms_Forms
   * @param mixed $model_id
   * @param string $data
   */
-  public function add_gallery($gallery_name = 'default', $model = FALSE, $model_id = FALSE, $data = array ())
+  public function add_gallery($gallery_name = FALSE, $model = FALSE, $model_id = FALSE, $data = array ())
   {
-    $data['model'] = $model;
-    $data['model_id'] = (is_null($model_id)) ? 0 : $model_id;
-    $data['gallery_name'] = $gallery_name;
-    $data['heading'] = ___($this->_formo->alias() . '_group_' . $gallery_name);
+    $data['model'] = ($model !== FALSE) ? $model : $this->_model;
+    $data['model_id'] = ($model_id !== FALSE) ? $model_id : $this->_model_id;
+    $data['gallery_name'] = ($gallery_name !== FALSE) ? $gallery_name : $data['model'] . '_images';
+    $data['heading'] = ___($this->_formo->alias() . '_group_' . $data['gallery_name']);
     
     $this->_galleries[ ] = new Gallery($data);
     

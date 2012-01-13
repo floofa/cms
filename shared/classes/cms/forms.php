@@ -4,6 +4,8 @@ class Cms_Forms
 { 
   protected static $_forms = array ();
   
+  protected static $_submitted_form = NULL;
+  
   protected $_name;
   
   protected $_folder;
@@ -135,6 +137,9 @@ class Cms_Forms
     if ( ! is_null($orm_object)) {
       $this->_saved = $orm_object->values($values)->save();
     }
+    
+    // ulozi do session informaci o zpracovani formulare
+    Session::instance()->set('cms.submitted_form', $this->get_form_name());
       
     if ($refresh)
       Request::refresh_page();
@@ -292,5 +297,19 @@ class Cms_Forms
       return self::$_forms[$form_name]->sent();
     
     return FALSE;
+  }
+  
+  /**
+  * zjisti, jestli byl formular USPESNE odeslan, z hodnoty v session nastavenou pri zpracovani formulare
+  * 
+  * @param mixed $form_name
+  */
+  public static function is_submitted($form_name)
+  {
+    if (is_null(self::$_submitted_form)) {
+      self::$_submitted_form = Session::instance()->get_once('cms.submitted_form', FALSE);
+    }
+    
+    return (self::$_submitted_form !== FALSE && self::$_submitted_form == $form_name);
   }
 }

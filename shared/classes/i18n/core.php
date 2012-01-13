@@ -87,12 +87,10 @@ class I18n_Core extends Kohana_I18n
 	 */
 	public static function load($lang)
 	{
-    /*
 		if (isset(I18n::$_cache[$lang]))
 		{
 			return I18n::$_cache[$lang];
 		}
-    */
 
 		// New translation table
 		$table = array();
@@ -111,10 +109,10 @@ class I18n_Core extends Kohana_I18n
 				foreach ($files as $file)
 				{
 					// Merge the language strings into the sub table
-					// $tables = Arr::merge($tables, Kohana::load($file));
+					$tables = Arr::merge($tables, Kohana::load($file));
           
           // i18n_plural pouziva merge_recursive - opraveno
-          $tables = array_merge($tables, Kohana::load($file));
+          //$tables = array_merge($tables, Kohana::load($file));
 				}
 
 				// Append the sub table, preventing less specific language

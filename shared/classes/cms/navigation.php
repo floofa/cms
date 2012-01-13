@@ -29,17 +29,27 @@ class Cms_Navigation
       
       foreach (self::$_items as $key => $value) {
         if ($current == $pos) {
-          self::$items[$key] = array ('name' => $name, 'link' => $link);
+          self::$_items[$key] = array ('name' => $name, 'link' => $link);
         }
         
         $current++;
       }
     }
     else {
-      self::$items[ ] = array ('name' => $name, 'link' => $link);
+      self::$_items[ ] = array ('name' => $name, 'link' => $link);
     }
-    
-    
+  }
+  
+  public static function add_before_last($name, $link)
+  {
+    if (count(self::$_items) > 1) {
+      $last = array_pop(self::$_items);
+      self::$_items[ ] = array ('name' => $name, 'link' => $link);
+      self::$_items[ ] = $last;
+    }
+    else {
+      self::$_items[ ] = array ('name' => $name, 'link' => $link);
+    }
   }
   
   public static function render($view = 'builder/navigation/default')

@@ -62,8 +62,22 @@ class Cms_Model_Gallery_Item extends Orm
       $file_thumb = str_replace('.', '_' . $key . '.', $file);
       
       $image = Image::factory($file);
+      
+      // oriznuti obrazku
+      if (isset($thumb['crop']) && $thumb['crop'] && isset($thumb['crop_type'])) {
+        if ($thumb['crop_type'] == 'square') {
+          $image = Image::factory($file);
+          $width = ($image->width > $image->height) ? $image->height : $image->width;
+          $image->crop($width, $width);
+          
+          Log::instance()->add(Log::DEBUG, $width);
+        }
+      }
+      
+      // resiznuti obrazku
       $image->resize($thumb['width'], $thumb['height'], (isset($thumb['dimension'])) ? $thumb['dimension'] : NULL);
       
+      // vodoznak
       if (isset($thumb['watermark']) && $thumb['watermark']) {
         $mark = Image::factory('media/' . $thumb['watermark_image']);
         $image->watermark($mark, (isset($thumb['watermark_offset_x'])) ? $thumb['watermark_offset_x'] : NULL, (isset($thumb['watermark_offset_y'])) ? $thumb['watermark_offset_y'] : NULL, (isset($thumb['watermark_opacity'])) ? $thumb['watermark_opacity'] : 50);

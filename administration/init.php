@@ -47,7 +47,11 @@ Route::set('auth-logout', 'logout')
     'action'      => 'logout',
   ));
 
-
+Route::set('cron', 'cron/<event_type>')
+  ->defaults(array (
+    'controller' => 'cron',
+    'action' => 'run',
+  ));
 
 /*
 // static

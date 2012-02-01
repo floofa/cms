@@ -231,4 +231,22 @@ class Cms_Auth_ORM extends Kohana_Auth_ORM
 
     return $user->password;
   }
+  
+  /**
+   * Gets the currently logged in user from the session (with auto_login check).
+   * Returns FALSE if no user is currently logged in.
+   *
+   * @return  mixed
+   */
+  public function get_user($default = NULL)
+  {
+    $user = parent::get_user($default);
+    
+    if ($user && $user->loaded()) {
+      // nacte role a opravneni
+      $user->load_roles_and_rights();
+    }
+
+    return $user;
+  }
 }

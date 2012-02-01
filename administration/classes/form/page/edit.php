@@ -29,7 +29,7 @@ class Form_Page_Edit extends Forms_List
       
     
     $this->col('col')
-      ->add('content', 'textarea', array ('attr' => array ('rows' => 20)))
+      ->add('content', 'textarea', array ('attr' => array ('rows' => 20, 'class' => (Kohana::$config->load('cms.ckeditor_enabled')) ? 'ckedit' : FALSE)))
       ->add('cms_status', 'bool', array ('value' => TRUE));
       
     $this->add_gallery('page_images', $this->_model, $this->_model_id);

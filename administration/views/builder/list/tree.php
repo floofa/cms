@@ -145,7 +145,8 @@ $(function() {
           if (payload.state !== 'ok') {
             $.jstree.rollback(data.rlbk);
           }
-        }
+        },
+        "json"
       );
     });
   });

@@ -25,9 +25,6 @@ class Cms_Cms
   
   public static function prepare_content($content, $config = array ())
   {
-    // orm object
-    $orm_object = arr::get($config, 'orm_object', FALSE);
-
     // site url
     $content = preg_replace('~{site_url}~', URL::site('', TRUE), $content);
     
@@ -36,6 +33,9 @@ class Cms_Cms
     
     // content images url
     $content = preg_replace('~{cimg_url}~', URL::site('media/content-images', TRUE, FALSE, FALSE), $content);
+    
+    // orm object
+    $orm_object = arr::get($config, 'orm_object', FALSE);
     
     // obrazky z galerie
     if ($orm_object && preg_match_all('~{img:([0-9,]*)(:([a-zA-Z0-9,-]*))?}~', $content, $matches)) {

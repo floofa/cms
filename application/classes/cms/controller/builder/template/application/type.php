@@ -39,6 +39,10 @@ abstract class Cms_Controller_Builder_Template_Application_Type extends Controll
         ->set('items', $items)
         ->set('pagination', $pagination)
         ->set('page', $this->_page);
+        
+      if ($this->_model_category !== FALSE) {
+        $this->_view->set('categories', ORM::factory($this->_model_category)->find_all());
+      }
     }
   }
   

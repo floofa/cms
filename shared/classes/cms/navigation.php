@@ -67,4 +67,9 @@ class Cms_Navigation
   {
     array_pop(self::$_items);
   }
+  
+  public static function remove_all()
+  {
+    self::$_items = array ();
+  }
 }

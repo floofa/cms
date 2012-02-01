@@ -4,7 +4,7 @@ return array (
   'basic_yes' => 'Ano',
   'basic_no' => 'Ne',
   
-  'static_page_page_types' => array('static' => 'Statická', 'homepage' => 'Homepage', 'news' => 'Novinky', 'articles' => 'Články'),
+  'static_page_page_types' => array('static' => 'Statická', 'homepage' => 'Homepage', 'news' => 'Novinky', 'articles' => 'Články', 'photogalleries' => 'Fotogalerie'),
   'static_page_page_layouts' => array('static' => 'Statický', 'dynamic' => 'Dynamický', 'homepage' => 'Homepage', 'fancy' => 'Fancy'),
   'static_block_types' => array ('static' => 'Statický', 'dynamic' => 'Dynamický'),
 
@@ -14,12 +14,15 @@ return array (
   'cms_menu_administration_module_menus' => 'Menu',
   'cms_menu_settings_module' => 'Nastavení',
   'cms_menu_settings_module_cms_users' => 'Uživatelé',
+  'cms_menu_settings_module_cms_roles' => 'Uživatelské role',
+  'cms_menu_settings_module_cms_rights' => 'Uživatelská oprávnění',
   
   // drobeckova navigace
   'navigation_base' => 'Cms',
   'navigation_list' => 'Výpis',
   'navigation_new' => 'Vytvořit',
   'navigation_edit' => 'Editace',
+  'navigation_access_denied' => 'Nepovolený přístup',
   
   // bookmarks
   'bookmarks_edit' => 'Editace',
@@ -31,6 +34,18 @@ return array (
   'list_cms_user_heading' => 'Výpis uživatelů',
   'list_cms_user_new_button' => 'Nový uživatel',
   'list_cms_user_fields' => array ('username' => 'Uživ. jméno', 'email' => 'E-mail'),
+  
+  // role uzivatelu cms
+  'navigation_cms_roles' => 'Uživatelské role',
+  'list_cms_role_heading' => 'Výpis uživatelských rolí',
+  'list_cms_role_new_button' => 'Nová role',
+  'list_cms_role_fields' => array ('name' => 'Název', 'description' => 'Popis'),
+  
+  // opravneni uzivatelu cms
+  'navigation_cms_rights' => 'Uživatelská oprávnění',
+  'list_cms_right_heading' => 'Výpis uživatelských oprávnění',
+  'list_cms_right_new_button' => 'Nové oprávnění',
+  'list_cms_right_fields' => array ('title' => 'Název', 'name' => 'Systémový název', 'parent' => 'Spadá pod'),
   
   // staticke stranky
   'navigation_pages' => 'Statické stránky',
@@ -76,6 +91,20 @@ return array (
   'form_cms_user_edit_field_username' => 'Login',
   'form_cms_user_edit_field_email' => 'E-mail',
   'form_cms_user_edit_field_password' => 'Heslo',
+  'form_cms_user_edit_field_cms_roles' => 'Role',
+  
+  // role uzivatelu cms
+  'form_cms_role_edit_heading' => 'Editace uživatelského oprávnění',
+  'form_cms_role_edit_field_name' => 'Název',
+  'form_cms_role_edit_field_description' => 'Popis',
+  
+  // opravneni uzivatelu cms
+  'form_cms_right_edit_heading' => 'Editace uživatelského oprávnění',
+  'form_cms_right_edit_field_title' => 'Název',
+  'form_cms_right_edit_field_name' => 'Systémový název',
+  'form_cms_right_edit_field_parent_id' => 'Nadřazené oprávnění',
+  'form_cms_right_edit_field_set_for_all_roles' => 'Nastavit pro všechny role',
+  'form_cms_role_edit_field_cms_rights' => 'Oprávnění',
   
   // staticke stranky
   'form_page_edit_heading' => 'Editace statické stránky',
@@ -129,7 +158,7 @@ return array (
     'alpha_numeric'  => 'Pole `:field` může obsahovat pouze písmena a číslice',
     'color'      => 'Do pole `:field` musíte zadat kód barvy',
     'credit_card'  => 'Do pole `:field` musíte zadat platné číslo platební karty',
-    'date'      => 'Do pole `:field` musíte zadat datum',
+    'date'      => 'Do pole `:field` musíte zadat platné datum',
     'decimal' => array(
       'one'    => 'Do pole `:field` musíte zadat číslo s jedním desetinným místem',
       'other'    => 'Do pole `:field` musíte zadat číslo s :param2 desetinnými místy',

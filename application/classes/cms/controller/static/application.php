@@ -20,7 +20,7 @@ abstract class Cms_Controller_Static_Application extends Controller_Builder_Stat
     
     $menu = new Menu($sys_name);
 
-    foreach ($menu_model->menu_items->where('lvl', '=', 2)->find_all() as $item) {
+    foreach ($menu_model->get_top_items() as $item) {
       $menu_item = $menu->add($item->name, $item->get_link(), array (), $item->get_links_for_active());
       
       if ($children = $item->get_children())

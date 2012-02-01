@@ -1,0 +1,20 @@
+<?php defined('SYSPATH') or die('No direct script access.');
+
+class Cms_Controller_Cms_Rights extends Controller_Builder_Template_Administration_Classic
+{
+  protected $_list_drag = TRUE;
+  
+  public function before()
+  {
+    parent::before();
+  }
+  
+  protected function _check_access_rights()
+  {
+    if ( ! parent::_check_access_rights())
+      return FALSE;
+    
+    return $this->_user->has_role('super_admin');
+  }
+}
+

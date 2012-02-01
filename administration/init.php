@@ -29,7 +29,14 @@ Route::set('mptt-list', '<controller>/list_tree/<id>')
     array (
     'action' => 'list_tree',
   ));
-
+  
+// galerie - informace o obrazku
+Route::set('galleries-item_info', 'galleries/item_info/<id>')
+  ->defaults(
+    array (
+    'controller' => 'galleries',
+    'action' => 'item_info',
+  ));
 
 /*** AUTH ***/
 
@@ -47,29 +54,11 @@ Route::set('auth-logout', 'logout')
     'action'      => 'logout',
   ));
 
+// cron
 Route::set('cron', 'cron/<event_type>')
   ->defaults(array (
     'controller' => 'cron',
     'action' => 'run',
   ));
 
-/*
-// static
-Route::set('static-administration', 'static/administration/<action>(/<args>)', array ('args' => '.+'))
-  ->defaults(array (
-    'controller' => 'static_administration',
-));
-
-// default - edit mptt
-Route::set('default-edit_tree', '<controller>/edit_tree/<id>(/<parent_id>)')
-  ->defaults(
-    array (
-    'action' => 'edit_tree',
-  ));
-
-Route::set('default', '(<controller>(/<action>(/<id>)))')
-  ->defaults(array(
-    'controller' => 'dashboard',
-    'action'     => 'index',
-));*/
 

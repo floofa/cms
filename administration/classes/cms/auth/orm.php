@@ -83,7 +83,8 @@ class Cms_Auth_ORM extends Kohana_Auth_ORM
     }
 
     // If the passwords match, perform a login
-    if ($user->has('cms_roles', ORM::factory('cms_role', array('name' => 'login'))) AND $user->password === $password)
+    //if ($user->has('cms_roles', ORM::factory('cms_role', array('name' => 'login'))) AND $user->password === $password)
+    if ($user->password === $password)
     {
       if ($remember === TRUE)
       {

@@ -8,6 +8,8 @@ $config['items']['administration_module']['children']['blocks']['children'] = ar
 $config['items']['administration_module']['children']['menus']['children'] = array ();
 
 $config['items']['settings_module']['children']['cms_users']['children'] = array ();
+$config['items']['settings_module']['children']['cms_roles']['children'] = array ();
+$config['items']['settings_module']['children']['cms_rights']['children'] = array ();
 
 /**
 * vypnuti polozek v menu

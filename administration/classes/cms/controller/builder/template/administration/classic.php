@@ -54,6 +54,35 @@ abstract class Cms_Controller_Builder_Template_Administration_Classic extends Co
     
     Navigation::add(___('navigation_base'), URL::base(TRUE, TRUE));
     Navigation::add(___('navigation_' . $this->request->controller()), Route::url('default', array ('controller' => $this->request->controller())));
+    
+    if ( ! $this->_user->has_role('super_admin')) {
+      if ( ! $this->_check_access_rights()) {
+        $this->request->action('access_denied');
+      }
+    }
+  }
+  
+  protected function _check_access_rights()
+  {
+    // opravneni k pristupu do controlleru
+    if ( ! $this->_user->has_right('access_' . $this->request->controller()))
+      return FALSE;
+      
+    // opravneni k provedeni akce
+    if ( ! $this->_user->has_right('action_' . $this->request->controller() . ':' . $this->request->action()))
+      return FALSE;
+      
+    return TRUE;
+  }
+  
+  public function action_access_denied()
+  {
+    Navigation::remove_all();
+    Navigation::add(___('navigation_base'), URL::base(TRUE, TRUE));
+    Navigation::add(___('navigation_access_denied'), URL::base(TRUE, TRUE));
+    
+    
+    $this->_view = View::factory('pages/access_denied');
   }
   
   public function action_index()

@@ -1,24 +1,16 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
-/**
- * Default auth user
- *
- * @package    Kohana/Auth
- * @author     Kohana Team
- * @copyright  (c) 2007-2011 Kohana Team
- * @license    http://kohanaframework.org/license
- */
+
 class Cms_Model_Cms_User extends ORM_Classic {
 
-	/**
-	 * A user has many tokens and roles
-	 *
-	 * @var array Relationhips
-	 */
 	protected $_has_many = array(
 		'user_tokens' => array ('model' => 'user_token'),
-		'cms_roles' => array ('model' => 'role', 'through' => 'cms_roles_cms_users'),
+		'cms_roles' => array ('model' => 'cms_role', 'through' => 'cms_roles_cms_users'),
 	);
-
+  
+  protected $_roles = array ();
+  
+  protected $_rights = array ();
+  
   public function set($column, $value)
   {
     switch ($column) {
@@ -48,10 +40,6 @@ class Cms_Model_Cms_User extends ORM_Classic {
   public function save(Validation $validation = NULL)
   {
     $return = parent::save($validation);
-     
-     // add login role
-    if ( ! $this->has('cms_roles', array (1)))
-     $this->add('cms_roles', array (1));
   }
 
 	/**
@@ -161,5 +149,58 @@ class Cms_Model_Cms_User extends ORM_Classic {
   {
     return $this->username;
   }
+  
+  public function load_roles_and_rights()
+  {
+    // nacteni roli
+    foreach (ORM::factory('cms_role')->find_all() as $role) {
+      $this->_roles[$role->name] = FALSE;
+    }
+    
+    // nacteni prav
+    foreach (ORM::factory('cms_right')->find_all() as $right) {
+      $this->_rights[$right->name] = FALSE;
+    }
+    
+    // nastaveni roli a opravneni
+    foreach ($this->cms_roles->find_all() as $role) {
+      $this->_roles[$role->name] = TRUE;
 
+      $rights = $role->cms_rights->find_all()->as_array('id', 'id');
+      
+      foreach ($role->cms_rights->find_all() as $right) {
+        $this->_rights[$right->name] = TRUE;
+      }
+    }
+  }
+
+  public function has_role($role)
+  {
+    if (is_array($role)) {
+      foreach ($role as $_role) {
+        if ( ! Arr::get($this->_roles, $_role, TRUE))
+          return FALSE;
+      }
+    }
+    else {
+      return Arr::get($this->_roles, $role, TRUE);
+    }
+    
+    return TRUE;
+  }
+  
+  public function has_right($right)
+  {
+    if (is_array($right)) {
+      foreach ($right as $_right) {
+        if ( ! Arr::get($this->_rights, $right, TRUE))
+          return FALSE;
+      }
+    }
+    else {
+      return Arr::get($this->_rights, $right, TRUE);
+    }
+    
+    return TRUE;
+  }
 }

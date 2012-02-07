@@ -3,6 +3,42 @@ SET foreign_key_checks = 0;
 SET time_zone = 'SYSTEM';
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
+DROP TABLE IF EXISTS `cms_rights`;
+CREATE TABLE `cms_rights` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` int(10) unsigned DEFAULT NULL,
+  `name` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `title` varchar(100) COLLATE utf8_czech_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8_czech_ci NOT NULL,
+  `sequence` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `parent_id` (`parent_id`),
+  CONSTRAINT `cms_rights_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `cms_rights` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+INSERT INTO `cms_rights` (`id`, `parent_id`, `name`, `title`, `description`, `sequence`) VALUES
+(1,  NULL,  'access_settings_module',  'Nastavení',  'Přístup do modulu',  4),
+(2,  1,  'access_cms_users',  'Nastavení > Uživatelé',  'Přístup do sekce',  3),
+(3,  1,  'access_cms_roles',  'Nastavení > Uživatelské role',  'Přístup do sekce',  1),
+(4,  2,  'right_edit_all_users',  'Nastavení -> Uživatelé - editace všech',  'Oprávnění k editaci všech uživatelů',  2);
+
+DROP TABLE IF EXISTS `cms_rights_cms_roles`;
+CREATE TABLE `cms_rights_cms_roles` (
+  `cms_role_id` int(10) unsigned NOT NULL,
+  `cms_right_id` int(10) unsigned NOT NULL,
+  KEY `cms_role_id` (`cms_role_id`),
+  KEY `cms_right_id` (`cms_right_id`),
+  CONSTRAINT `cms_rights_cms_roles_ibfk_1` FOREIGN KEY (`cms_right_id`) REFERENCES `cms_rights` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `cms_rights_cms_roles_ibfk_2` FOREIGN KEY (`cms_role_id`) REFERENCES `cms_roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+INSERT INTO `cms_rights_cms_roles` (`cms_role_id`, `cms_right_id`) VALUES
+(1,  1),
+(1,  2),
+(1,  3),
+(1,  4);
+
 DROP TABLE IF EXISTS `cms_roles`;
 CREATE TABLE `cms_roles` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -13,8 +49,7 @@ CREATE TABLE `cms_roles` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 INSERT INTO `cms_roles` (`id`, `name`, `description`) VALUES
-(1,  'login',  'Login privileges, granted after account confirmation'),
-(2,  'admin',  'Administrative user, has access to everything.');
+(1,  'admin',  '');
 
 DROP TABLE IF EXISTS `cms_roles_cms_users`;
 CREATE TABLE `cms_roles_cms_users` (
@@ -27,7 +62,8 @@ CREATE TABLE `cms_roles_cms_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `cms_roles_cms_users` (`cms_user_id`, `cms_role_id`) VALUES
-(1,  1);
+(1,  1),
+(2,  1);
 
 DROP TABLE IF EXISTS `cms_users`;
 CREATE TABLE `cms_users` (
@@ -43,7 +79,8 @@ CREATE TABLE `cms_users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 INSERT INTO `cms_users` (`id`, `email`, `username`, `password`, `logins`, `last_login`) VALUES
-(1,  'ondrej.trojanek@gmail.com',  'admin',  'e930b8bc9784bb542c9eafce0b5ff72b1da215d534b89c1b4e0f7e58151258d1',  184,  1323365333);
+(1,  'ondrej.trojanek@gmail.com',  'developer',  '190ec61e99857195564d9e2d8ccd58486fb28193ce362c619c359136c3fdad90',  0,  1323365333),
+(2,  'michal_pecka@studioaspekt.cz',  'admin',  'aaf295eba084236b005086bfb76fc8bbe248025b8679f7858ebd053f5a8657f1',  0,  1323365333);
 
 DROP TABLE IF EXISTS `galleries`;
 CREATE TABLE `galleries` (

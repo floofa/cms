@@ -11,10 +11,7 @@ class Cms_Controller_Cms_Rights extends Controller_Builder_Template_Administrati
   
   protected function _check_access_rights()
   {
-    if ( ! parent::_check_access_rights())
-      return FALSE;
-    
-    return $this->_user->has_role('super_admin');
+    return FALSE;
   }
 }
 

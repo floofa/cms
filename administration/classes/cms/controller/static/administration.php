@@ -59,21 +59,20 @@ class Cms_Controller_Static_Administration extends Cms_Controller_Static
     }
     
     $user = Auth::instance()->get_user();
-    $super_admin = $user->has_role('super_admin');
     
     foreach ($sections as $section => $items) {
-      if ( ! $super_admin && ! $user->has_right('access_' . $section))
+      if ( ! $user->has_right('access_' . $section))
         continue;
       
       $menu_item = $menu->add(___('cms_menu_' . $section), URL::site($section));
       
       foreach ($items['children'] as $item => $subitems) {
         // opravneni na zobrazeni
-        if ( ! $super_admin && ! $user->has_right('access_' . $item))
+        if ( ! $user->has_right('access_' . $item))
           continue;
         
         // opravneni uzivatelu muze editovat pouze superadmin
-        if ($item == 'cms_rights' && ! $user->has_role('super_admin'))
+        if ($item == 'cms_rights' && ! $user->has_unlimited_access())
           continue;
         
         $menu->add_sub($menu_item, ___('cms_menu_' . $section . '_' . $item), URL::site($item));

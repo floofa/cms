@@ -45,7 +45,7 @@ return array (
   'navigation_cms_rights' => 'Uživatelská oprávnění',
   'list_cms_right_heading' => 'Výpis uživatelských oprávnění',
   'list_cms_right_new_button' => 'Nové oprávnění',
-  'list_cms_right_fields' => array ('title' => 'Název', 'name' => 'Systémový název', 'parent' => 'Spadá pod'),
+  'list_cms_right_fields' => array ('title' => 'Název', 'description' => 'Popis', 'name' => 'Systémový název', 'parent' => 'Spadá pod'),
   
   // staticke stranky
   'navigation_pages' => 'Statické stránky',
@@ -102,6 +102,7 @@ return array (
   'form_cms_right_edit_heading' => 'Editace uživatelského oprávnění',
   'form_cms_right_edit_field_title' => 'Název',
   'form_cms_right_edit_field_name' => 'Systémový název',
+  'form_cms_right_edit_field_description' => 'Popis',
   'form_cms_right_edit_field_parent_id' => 'Nadřazené oprávnění',
   'form_cms_right_edit_field_set_for_all_roles' => 'Nastavit pro všechny role',
   'form_cms_role_edit_field_cms_rights' => 'Oprávnění',

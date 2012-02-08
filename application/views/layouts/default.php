@@ -1,6 +1,5 @@
 <html>
   <?=Head::render()?>
-</html>
 
 <body>
   <?=Request::factory('static_application/menu/main_menu')->execute()?>
@@ -10,3 +9,4 @@
   
   <?=Blocks::get('footer')?>
 </body>
+</html>

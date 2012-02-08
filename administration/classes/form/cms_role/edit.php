@@ -8,7 +8,7 @@ class Form_Cms_Role_Edit extends Forms_List
       ->col('col1')
       ->add('name')
       ->add('description');
-      
+    
     $this->col('col2')
       ->add('cms_rights', 'select', array ('value' => ORM::factory('cms_role', $this->_model_id)->cms_rights->find_all()->as_array('id', 'id'), 'options' => ORM::factory('cms_right')->find_all()->as_array('id', 'name'), 'attr' => array ('multiple' => 'multiple')));
   }

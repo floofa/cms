@@ -6,7 +6,8 @@ class Form_Cms_Right_Edit extends Forms_List
   {
     $this->group('group1')
       ->col('col1')
-      ->add('title');
+      ->add('title')
+      ->add('description');
       
       
     $this->col('col2')

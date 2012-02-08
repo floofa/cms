@@ -55,7 +55,7 @@ abstract class Cms_Controller_Builder_Template_Administration_Classic extends Co
     Navigation::add(___('navigation_base'), URL::base(TRUE, TRUE));
     Navigation::add(___('navigation_' . $this->request->controller()), Route::url('default', array ('controller' => $this->request->controller())));
     
-    if ( ! $this->_user->has_role('super_admin')) {
+    if ( ! $this->_user->has_unlimited_access()) {
       if ( ! $this->_check_access_rights()) {
         $this->request->action('access_denied');
       }
@@ -98,18 +98,18 @@ abstract class Cms_Controller_Builder_Template_Administration_Classic extends Co
     // filter
     $filters = Forms::get_exists(($this->_list_filter_name) ? $this->_list_filter_name : 'filter', $this->_model, $this->_model, FALSE, array ('session_name' => $this->_list_filter_session_name));
     
-    // pagination
-    $pagination = Pagination::factory(array ('total_items' => ORM::factory($this->_model)->set_filter_session_name($this->_list_filter_session_name)->list_count_all()));
+    // items
+    $items = $this->_set_list_items();
     
-    // $items
-    $items = ORM::factory($this->_model)->set_filter_session_name($this->_list_filter_session_name)->list_all($pagination->items_per_page, $pagination->offset);
+    // pagination
+    $pagination = Pagination::factory(array ('total_items' => $items->list_count_all()));
     
     // multi select
     $multi = Forms::get('multi', FALSE, $this->_model, '0', array ('list_name' => ($this->_list_name) ? $this->_list_name : $this->_model, 'actions' => $this->_list_multi_actions, 'items_per_page' => $pagination->items_per_page, 'total_pages' => $pagination->total_pages));
     
     // table
     $table_config = array (
-      'items' => $items,
+      'items' => $items->list_all($pagination->items_per_page, $pagination->offset),
       'actions' => $this->_list_actions, 
       'row_action' => $this->_list_row_action,
       'new_button' => $this->_list_new,
@@ -127,6 +127,11 @@ abstract class Cms_Controller_Builder_Template_Administration_Classic extends Co
     }
     
     $this->_view->render = $table->render();
+  }
+  
+  protected function _set_list_items()
+  {
+    return ORM::factory($this->_model)->set_filter_session_name($this->_list_filter_session_name);
   }
   
   public function action_edit()

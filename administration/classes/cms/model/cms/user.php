@@ -7,6 +7,8 @@ class Cms_Model_Cms_User extends ORM_Classic {
 		'cms_roles' => array ('model' => 'cms_role', 'through' => 'cms_roles_cms_users'),
 	);
   
+  protected $_roles_and_rights_loaded = FALSE;
+  
   protected $_roles = array ();
   
   protected $_rights = array ();
@@ -172,35 +174,50 @@ class Cms_Model_Cms_User extends ORM_Classic {
         $this->_rights[$right->name] = TRUE;
       }
     }
+    
+    $this->_roles_and_rights_loaded = TRUE;
   }
 
-  public function has_role($role)
+  public function has_role($role, $check_unlimited_access = TRUE)
   {
+    // pokud ma uzivatel neomezeny pristup, rovnou vrati TRUE
+    if ($check_unlimited_access && $this->has_unlimited_access())
+      return TRUE;
+    
+    if ( ! $this->_roles_and_rights_loaded)
+        $this->load_roles_and_rights();
+    
     if (is_array($role)) {
       foreach ($role as $_role) {
-        if ( ! Arr::get($this->_roles, $_role, TRUE))
+        if ( ! $this->has_role($_role))
           return FALSE;
       }
     }
-    else {
-      return Arr::get($this->_roles, $role, TRUE);
-    }
     
-    return TRUE;
+    return Arr::get($this->_roles, $role, TRUE);
   }
   
-  public function has_right($right)
+  public function has_right($right, $check_unlimited_access = TRUE)
   {
+    // pokud ma uzivatel neomezeny pristup, rovnou vrati TRUE
+    if ($check_unlimited_access && $this->has_unlimited_access())
+      return TRUE;
+    
+    if ( ! $this->_roles_and_rights_loaded)
+      $this->load_roles_and_rights();
+    
     if (is_array($right)) {
       foreach ($right as $_right) {
-        if ( ! Arr::get($this->_rights, $right, TRUE))
+        if ( ! $this->has_right($_right))
           return FALSE;
       }
     }
-    else {
-      return Arr::get($this->_rights, $right, TRUE);
-    }
     
-    return TRUE;
+    return Arr::get($this->_rights, $right, TRUE);
+  }
+  
+  public function has_unlimited_access()
+  {
+    return (bool) $this->developer;
   }
 }

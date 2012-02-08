@@ -4,21 +4,18 @@ class Form_Cms_User_Edit extends Forms_List
 {
   public function build()
   {
-    if (Auth::instance()->get_user()->has_role('super_admin')) {
-      $roles = ORM::factory('cms_role')->find_all();
-    }
-    else {
-      $roles = ORM::factory('cms_role')->where('name', '!=', 'super_admin')->find_all();
-    }
-    
     $this->group('group1')
       ->col('col1')
       ->add('username')
       ->add('password', 'password', array ('attr' => array ('autocomplete' => 'off')))
       ->add('email', array ('attr' => array ('autocomplete' => 'off')));
       
-    $this->col('col2')
-      ->add('cms_roles', 'select', array ('value' => ORM::factory('cms_user', $this->_model_id)->cms_roles->find_all()->as_array('id', 'id'), 'options' => $roles->as_array('id', 'name'), 'attr' => array ('multiple' => 'multiple')));
+    $user = Auth::instance()->get_user();
+      
+    if ($user->has_right('right_edit_all_users')) {
+      $this->col('col2')
+        ->add('cms_roles', 'select', array ('value' => ORM::factory('cms_user', $this->_model_id)->cms_roles->find_all()->as_array('id', 'id'), 'options' => ORM::factory('cms_role')->find_all()->as_array('id', 'name'), 'attr' => array ('multiple' => 'multiple')));
+    }
   }
   
   public function set_rules()
@@ -41,8 +38,10 @@ class Form_Cms_User_Edit extends Forms_List
     
     $this->rule('email', 'min_length', array (':value', 6));
     
-    $this->rules('cms_roles', array (
-      array ('not_empty'),
-    ));
+    if ($this->_formo->find('cms_roles')) {
+      $this->rules('cms_roles', array (
+        array ('not_empty'),
+      ));
+    }
   }
 }

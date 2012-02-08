@@ -3,6 +3,31 @@ SET foreign_key_checks = 0;
 SET time_zone = 'SYSTEM';
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
+DROP TABLE IF EXISTS `cms_rights`;
+CREATE TABLE `cms_rights` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` int(10) unsigned DEFAULT NULL,
+  `name` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `title` varchar(100) COLLATE utf8_czech_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8_czech_ci NOT NULL,
+  `sequence` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `parent_id` (`parent_id`),
+  CONSTRAINT `cms_rights_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `cms_rights` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+
+DROP TABLE IF EXISTS `cms_rights_cms_roles`;
+CREATE TABLE `cms_rights_cms_roles` (
+  `cms_role_id` int(10) unsigned NOT NULL,
+  `cms_right_id` int(10) unsigned NOT NULL,
+  KEY `cms_role_id` (`cms_role_id`),
+  KEY `cms_right_id` (`cms_right_id`),
+  CONSTRAINT `cms_rights_cms_roles_ibfk_1` FOREIGN KEY (`cms_right_id`) REFERENCES `cms_rights` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `cms_rights_cms_roles_ibfk_2` FOREIGN KEY (`cms_role_id`) REFERENCES `cms_roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
 DROP TABLE IF EXISTS `cms_roles`;
 CREATE TABLE `cms_roles` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -13,8 +38,8 @@ CREATE TABLE `cms_roles` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 INSERT INTO `cms_roles` (`id`, `name`, `description`) VALUES
-(1,  'login',  'Login privileges, granted after account confirmation'),
-(2,  'admin',  'Administrative user, has access to everything.');
+(1,  'super_admin',  ''),
+(2,  'admin',  '');
 
 DROP TABLE IF EXISTS `cms_roles_cms_users`;
 CREATE TABLE `cms_roles_cms_users` (
@@ -27,7 +52,8 @@ CREATE TABLE `cms_roles_cms_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `cms_roles_cms_users` (`cms_user_id`, `cms_role_id`) VALUES
-(1,  1);
+(1,  1),
+(2, 2);
 
 DROP TABLE IF EXISTS `cms_users`;
 CREATE TABLE `cms_users` (
@@ -43,7 +69,8 @@ CREATE TABLE `cms_users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 INSERT INTO `cms_users` (`id`, `email`, `username`, `password`, `logins`, `last_login`) VALUES
-(1,  'ondrej.trojanek@gmail.com',  'admin',  'e930b8bc9784bb542c9eafce0b5ff72b1da215d534b89c1b4e0f7e58151258d1',  184,  1323365333);
+(1,  'ondrej.trojanek@gmail.com',  'superadmin',  'e930b8bc9784bb542c9eafce0b5ff72b1da215d534b89c1b4e0f7e58151258d1',  184,  1323365333),
+(2,  'email@gmail.com',  'admin',  'e930b8bc9784bb542c9eafce0b5ff72b1da215d534b89c1b4e0f7e58151258d1',  184,  1323365333);
 
 DROP TABLE IF EXISTS `galleries`;
 CREATE TABLE `galleries` (
@@ -78,6 +105,7 @@ CREATE TABLE `menu_items` (
   `url` varchar(100) COLLATE utf8_czech_ci DEFAULT NULL,
   `page_id` int(10) unsigned DEFAULT NULL,
   `menu_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `links_for_active` text COLLATE utf8_czech_ci NOT NULL,
   `lft` int(10) unsigned NOT NULL DEFAULT '0',
   `rgt` int(10) unsigned NOT NULL DEFAULT '0',
   `lvl` int(10) unsigned NOT NULL DEFAULT '0',
@@ -126,3 +154,18 @@ CREATE TABLE `pages` (
   UNIQUE KEY `rew_id` (`rew_id`),
   UNIQUE KEY `sys_name` (`sys_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+INSERT INTO `pages` (`id`, `rew_id`, `name`, `sys_name`, `head_title`, `page_type`, `page_layout`, `meta_keywords`, `meta_description`, `content`, `cms_status`) VALUES
+(8,  'uvod',  'Úvod',  'uvod',  'Úvod',  'homepage',  'static',  '',  '',  '',  1);
+
+DROP TABLE IF EXISTS `blocks`;
+CREATE TABLE `blocks` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `sys_name` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `type` enum('static','dynamic') COLLATE utf8_czech_ci NOT NULL DEFAULT 'static',
+  `content` text COLLATE utf8_czech_ci NOT NULL,
+  `cms_status` tinyint(3) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sys_name` (`sys_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;

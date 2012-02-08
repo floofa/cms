@@ -8,7 +8,7 @@ abstract class Cms_Controller_Builder_Template_Application_Auth extends Controll
   
   public function before()
   {
-    $this->_user = Authlite::instance()->get_user();
+    $this->_user = Authlite::instance('authlite_user')->get_user();
     
     if ( ! $this->_user && ! in_array($this->request->action(), $this->_disabled_auth))
       $this->not_logged_in_redirect();

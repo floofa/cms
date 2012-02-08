@@ -21,11 +21,12 @@ class Form_Page_Edit extends Forms_List
       
       
     $this->group('group2');
-    $this->col('col1')
-      ->add('page_type', 'select', array ('options' => ___('static_page_page_types')));
     
-    $this->col('col2')
+    $this->col('col1')
       ->add('page_layout', 'select', array ('options' => ___('static_page_page_layouts')));
+      
+    $this->col('col2')
+      ->add('page_type', 'select', array ('options' => ___('static_page_page_types')));
       
     
     $this->col('col')

@@ -52,7 +52,7 @@ abstract class Cms_Controller_Pages extends Cms_Controller_Builder_Template_Appl
     
     // layout
     if (Kohana::find_file('views/layouts', $this->_page->page_layout)) {
-      $this->_layout = 'layouts/' . $this->_page->page_layout;
+      $this->_layout = $this->_page->page_layout;
     }
     
     $view_type_name = FALSE;

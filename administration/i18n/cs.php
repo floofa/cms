@@ -4,8 +4,8 @@ return array (
   'basic_yes' => 'Ano',
   'basic_no' => 'Ne',
   
-  'static_page_page_types' => array('static' => 'Statická', 'homepage' => 'Homepage', 'news' => 'Novinky', 'articles' => 'Články', 'photogalleries' => 'Fotogalerie'),
-  'static_page_page_layouts' => array('static' => 'Statický', 'dynamic' => 'Dynamický', 'homepage' => 'Homepage', 'fancy' => 'Fancy'),
+  'static_page_page_types' => array ('static' => 'Statická', 'homepage' => 'Homepage', 'news' => 'Novinky', 'articles' => 'Články', 'photogalleries' => 'Fotogalerie'),
+  'static_page_page_layouts' => array ('static' => 'Výchozí', 'homepage' => 'Homepage', 'fancy' => 'Fancy'),
   'static_block_types' => array ('static' => 'Statický', 'dynamic' => 'Dynamický'),
 
   // hlavni menu

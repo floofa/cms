@@ -278,9 +278,18 @@ class Cms_Forms
     return ORM::factory($this->_model, $this->_model_id)->is_unique($value, $field);
   }
   
-  public function exists($value, $field, $model)
+  public function exists($value, $field, $model = FALSE)
   {
+    if ($model === FALSE) {
+      $model = $this->_model;
+    }
+    
     return ORM::factory($model)->exists($value, $field);
+  }
+  
+  public function not_exists($value, $field, $model = FALSE)
+  {
+    return ! $this->exists($value, $field, $model);
   }
   
   public function sent($values = NULL) 

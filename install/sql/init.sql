@@ -115,6 +115,7 @@ CREATE TABLE `menu_items` (
   `url` varchar(100) COLLATE utf8_czech_ci DEFAULT NULL,
   `page_id` int(10) unsigned DEFAULT NULL,
   `menu_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `links_for_active` text COLLATE utf8_czech_ci NOT NULL,
   `lft` int(10) unsigned NOT NULL DEFAULT '0',
   `rgt` int(10) unsigned NOT NULL DEFAULT '0',
   `lvl` int(10) unsigned NOT NULL DEFAULT '0',
@@ -163,3 +164,18 @@ CREATE TABLE `pages` (
   UNIQUE KEY `rew_id` (`rew_id`),
   UNIQUE KEY `sys_name` (`sys_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+INSERT INTO `pages` (`id`, `rew_id`, `name`, `sys_name`, `head_title`, `page_type`, `page_layout`, `meta_keywords`, `meta_description`, `content`, `cms_status`) VALUES
+(8,  'uvod',  'Úvod',  'uvod',  'Úvod',  'homepage',  'static',  '',  '',  '',  1);
+
+DROP TABLE IF EXISTS `blocks`;
+CREATE TABLE `blocks` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `sys_name` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `type` enum('static','dynamic') COLLATE utf8_czech_ci NOT NULL DEFAULT 'static',
+  `content` text COLLATE utf8_czech_ci NOT NULL,
+  `cms_status` tinyint(3) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sys_name` (`sys_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;

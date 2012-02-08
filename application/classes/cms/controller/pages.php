@@ -52,7 +52,7 @@ abstract class Cms_Controller_Pages extends Controller_Builder_Template_Applicat
     
     // nastaveni layoutu stranky, pokud existuje
     if (Kohana::find_file('views/layouts', $this->_page->page_layout)) {
-      $this->_layout = 'layouts/' . $this->_page->page_layout;
+      $this->_layout = $this->_page->page_layout;
     }
     
     $layout_content = FALSE;

@@ -15,22 +15,21 @@ class Form_Page_Edit extends Forms_List
       ->add('rew_id')
       ->add('sys_name');
       
-    $this->col('col')
-      ->add('meta_description')
-      ->add('meta_keywords');
-      
       
     $this->group('group2');
     $this->col('col1')
-      ->add('page_type', 'select', array ('options' => ___('static_page_page_types')));
+      ->add('cms_status', 'bool', array ('value' => TRUE));
     
     $this->col('col2')
       ->add('page_layout', 'select', array ('options' => ___('static_page_page_layouts')));
       
     
     $this->col('col')
-      ->add('content', 'textarea', array ('attr' => array ('rows' => 20, 'class' => (Kohana::$config->load('cms.ckeditor_enabled')) ? 'ckedit' : FALSE)))
-      ->add('cms_status', 'bool', array ('value' => TRUE));
+      ->add('content', 'textarea', array ('attr' => array ('rows' => 20, 'class' => (Kohana::$config->load('cms.ckeditor_enabled')) ? 'ckedit' : FALSE)));
+      
+    $this->col('col')
+      ->add('meta_description')
+      ->add('meta_keywords');
       
     $this->add_gallery('page_images', $this->_model, $this->_model_id);
   }

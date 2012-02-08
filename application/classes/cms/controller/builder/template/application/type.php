@@ -8,22 +8,22 @@ abstract class Cms_Controller_Builder_Template_Application_Type extends Controll
   
   protected $_page_type;
   
-  protected $_page;
+  protected $_page = NULL;
   
   public function before()
   {
     parent::before();
     
-    $this->_page = ORM::factory('page')->where('page_type', '=', $this->_page_type)->find();
+    $this->_page = ORM::factory('page')->where('sys_name', '=', $this->_page_type)->find();  
     
-    // pokud neexistuje stranka daneho typu nebo nema povoleno zobrazeni, ukoncime
-    if ( ! $this->_page->cms_status)
+    // pokud stranka nema povoleno zobrazeni, ukoncime
+    if ($this->_page->loaded() && ! $this->_page->cms_status)
       throw new HTTP_Exception_404('Unable to find page type :type.', array (':type' => $this->_page_type));
-      
-    Head::set_arr($this->_page->as_array('value'));
     
-    // nastaveni navigace podle typu stranky
-    Navigation::add($this->_page->name, Route::url($this->_page_type));
+    if ($this->_page->loaded()) {
+      Head::set_arr($this->_page->as_array('value'));
+      Navigation::add($this->_page->name, Route::url($this->_page_type));
+    }
   }
   
   /**

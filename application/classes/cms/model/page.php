@@ -23,4 +23,9 @@ class Cms_Model_Page extends ORM
   {
     return ORM::factory('page')->where('page_type', '=', $type)->find();
   }
+  
+  public function get_rew_id_by_sys_name($sys_name)
+  {
+    return $this->where('sys_name', '=', $sys_name)->find()->rew_id;
+  }
 }
